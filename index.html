@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mi Reina 💗</title>
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --bg2:#1a0f2e;
+      --glass: rgba(255,255,255,0.10);
+      --glass2: rgba(255,255,255,0.14);
+      --line: rgba(255,255,255,0.16);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.75);
+      --accent:#ff4d8d;
+      --accent2:#ffd1df;
+      --shadow: 0 26px 80px rgba(0,0,0,0.55);
+      --radius: 22px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(900px 650px at 20% 10%, rgba(255,77,141,0.22), transparent 60%),
+        radial-gradient(900px 700px at 80% 25%, rgba(255,209,223,0.14), transparent 60%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* ===== Cute anime/chibi vibe (original SVG stickers + animated sparkles) ===== */
+    .bg{
+      position:fixed; inset:0; z-index:-2; pointer-events:none; overflow:hidden;
+      opacity:0.95;
+    }
+    .bg::before{
+      content:"";
+      position:absolute; inset:-20px;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.72), rgba(0,0,0,0.62)),
+        radial-gradient(1000px 700px at 30% 10%, rgba(255,77,141,0.20), transparent 62%),
+        radial-gradient(900px 650px at 70% 90%, rgba(255,209,223,0.12), transparent 62%);
+      z-index:3;
+    }
+
+    .tiles{position:absolute; inset:0; padding:18px; display:grid; grid-template-columns:repeat(12,1fr); grid-template-rows:repeat(10,1fr); gap:10px; z-index:1;}
+    .tile{border-radius:18px; border:1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.04); overflow:hidden; position:relative;}
+    .tile svg{width:100%; height:100%; display:block; opacity:0.92;}
+    .tile::after{
+      content:""; position:absolute; inset:0;
+      background:
+        radial-gradient(120px 120px at 25% 20%, rgba(255,77,141,0.22), transparent 60%),
+        radial-gradient(140px 140px at 75% 70%, rgba(255,209,223,0.14), transparent 60%);
+      opacity:0.65;
+    }
+
+    .sparkles{position:absolute; inset:0; z-index:2; opacity:0.6; filter: blur(0.2px);} 
+    .sparkle{position:absolute; font-size:14px; animation: twinkle 2.6s ease-in-out infinite;}
+    @keyframes twinkle{0%,100%{transform:scale(0.9); opacity:0.25}50%{transform:scale(1.25); opacity:0.9}}
+
+    .wrap{max-width:1050px; margin:0 auto; padding:22px 16px 70px; min-height:100vh; display:flex; flex-direction:column; gap:14px;}
+    header{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:0.2px;}
+    .badge{display:inline-flex; align-items:center; gap:8px; padding:7px 11px; border-radius:999px; background: rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.14); color: rgba(255,255,255,0.78); font-size:12px; user-select:none;}
+
+    .stage{
+      border-radius: calc(var(--radius) + 10px);
+      border:1px solid rgba(255,255,255,0.14);
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .stage-inner{padding:22px;}
+    @media (max-width:700px){.stage-inner{padding:18px;}}
+
+    .screen{display:none; animation: fadeIn 260ms ease forwards;}
+    .screen.active{display:block}
+    @keyframes fadeIn{from{opacity:0; transform: translateY(6px)}to{opacity:1; transform: translateY(0)}}
+
+    .card{border-radius: var(--radius); background: var(--glass); border:1px solid rgba(255,255,255,0.14); padding:16px;}
+    .grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:14px; align-items:stretch;}
+    @media (max-width:880px){.grid{grid-template-columns:1fr}}
+
+    h1{margin:0 0 10px; font-size:clamp(22px, 3.6vw, 36px); line-height:1.15}
+    .lead{margin:0; color:var(--muted); font-size:clamp(14px, 1.8vw, 16px); line-height:1.55}
+    .tiny{font-size:12px; color: rgba(255,255,255,0.65)}
+    .divider{height:1px; background:rgba(255,255,255,0.12); margin:12px 0}
+
+    .cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    button{
+      border:none; border-radius:16px; padding:12px 14px; font-weight:900;
+      cursor:pointer; transition: transform .08s ease, filter .12s ease;
+      user-select:none;
+    }
+    button:active{transform:scale(0.985)}
+    .btn-primary{background: linear-gradient(135deg, var(--accent), #ff2f76); color:white; box-shadow: 0 14px 28px rgba(255,77,141,0.25);} 
+    .btn-primary:hover{filter:brightness(1.08)}
+    .btn-ghost{background: rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.16); color: rgba(255,255,255,0.90);} 
+    .btn-ghost:hover{filter:brightness(1.10)}
+
+    /* Floating hearts */
+    .hearts{position:absolute; inset:0; pointer-events:none; overflow:hidden}
+    .heart{position:absolute; bottom:-40px; opacity:0; animation: floatUp linear forwards; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.35));}
+    @keyframes floatUp{0%{transform: translateY(0) translateX(0) scale(0.8); opacity:0}10%{opacity:0.9}100%{transform: translateY(-120vh) translateX(var(--drift)) scale(1.35); opacity:0}}
+
+    /* ===== Envelope + paginated letter ===== */
+    .letter-grid{display:grid; grid-template-columns: 0.95fr 1.05fr; gap:14px; align-items:start;}
+    @media (max-width:900px){.letter-grid{grid-template-columns:1fr}}
+
+    .envelope-stage{position:relative; height:360px; border-radius: var(--radius); background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); overflow:hidden;}
+
+    .sticker{
+      position:absolute; width:86px; height:86px; border-radius:22px;
+      background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+      display:flex; align-items:center; justify-content:center;
+      backdrop-filter: blur(6px);
+    }
+    .st1{left:14px; top:14px}
+    .st2{right:14px; top:14px}
+    .st3{left:14px; bottom:14px}
+    .st4{right:14px; bottom:14px}
+
+    .env-shadow{position:absolute; left:50%; bottom:16px; transform: translateX(-50%); width:min(440px, 92%); height:26px; background: rgba(0,0,0,0.35); filter: blur(18px); border-radius:999px; opacity:0.65;}
+
+    .env{position:absolute; left:50%; top:56%; transform: translate(-50%, -50%); width:min(440px, 92%); height:250px; cursor:pointer; user-select:none;}
+    .env-body{position:absolute; inset:0; border-radius:18px; background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.84)); border:1px solid rgba(255,255,255,0.70); overflow:hidden;}
+    .env-hearts{position:absolute; inset:0; opacity:0.38;
+      background:
+        radial-gradient(8px 8px at 18% 30%, rgba(255,77,141,0.85), transparent 60%),
+        radial-gradient(7px 7px at 30% 58%, rgba(255,77,141,0.75), transparent 60%),
+        radial-gradient(8px 8px at 55% 34%, rgba(255,77,141,0.80), transparent 60%),
+        radial-gradient(7px 7px at 72% 64%, rgba(255,77,141,0.72), transparent 60%),
+        radial-gradient(8px 8px at 82% 40%, rgba(255,77,141,0.82), transparent 60%);
+    }
+
+    .env-flap{position:absolute; left:0; right:0; top:0; height:58%; transform-origin: top center; transition: transform 650ms cubic-bezier(.2,.9,.2,1);
+      background: linear-gradient(180deg, rgba(255,77,141,0.16), rgba(255,255,255,0.0));
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      border-top-left-radius:18px; border-top-right-radius:18px;
+      border:1px solid rgba(255,255,255,0.70);
+      border-bottom:none;
+    }
+
+    .env-band{position:absolute; left:0; right:0; bottom:0; height:58px; background: rgba(255,77,141,0.10); border-top:1px solid rgba(255,77,141,0.25);
+      display:flex; align-items:center; justify-content:space-between; padding:0 12px; gap:10px;
+    }
+    .chibi-dot{width:38px; height:38px; border-radius:14px; border:1px solid rgba(255,77,141,0.25); background: rgba(255,255,255,0.65);
+      display:flex; align-items:center; justify-content:center; font-size:16px;
+    }
+
+    .paper{
+      position:absolute; left:50%; top:14px; transform: translateX(-50%);
+      width:86%; height:220px; border-radius:16px;
+      background: rgba(255,255,255,0.94); border:1px solid rgba(255,255,255,0.78);
+      box-shadow: 0 18px 38px rgba(0,0,0,0.28);
+      transition: transform 850ms cubic-bezier(.2,.9,.2,1), opacity 300ms ease;
+      opacity:0; pointer-events:none; overflow:hidden;
+    }
+    .paper::before{content:""; position:absolute; inset:0; pointer-events:none;
+      background: repeating-linear-gradient(180deg, rgba(255,77,141,0.05) 0px, rgba(255,77,141,0.05) 1px, transparent 1px, transparent 22px);
+      opacity:0.55;
+    }
+    .paper-inner{position:absolute; inset:14px; overflow:auto; color: rgba(20,20,26,0.92); font-size:15px; line-height:1.55;}
+
+    .paper-nav{
+      position:absolute; left:12px; right:12px; bottom:10px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding-top:8px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.92) 35%);
+    }
+    .paper-nav .mini{
+      border:none; border-radius: 12px; padding:8px 10px;
+      font-weight:900; cursor:pointer;
+      background: rgba(255,77,141,0.12);
+      color: rgba(20,20,26,0.88);
+    }
+    .paper-nav .mini:active{transform:scale(0.98)}
+    .paper-nav .count{font-size:12px; color: rgba(20,20,26,0.65); font-weight:800}
+
+    .env.open .env-flap{transform: rotateX(165deg)}
+    .env.open .paper{opacity:1; transform: translateX(-50%) translateY(150px)}
+
+    .panel{border-radius: var(--radius); background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); padding:16px; min-height:360px;}
+    .panel .title{font-weight:900; margin:0 0 10px; font-size:18px}
+    .panel .body{color: rgba(255,255,255,0.78); line-height:1.6; font-size:14.5px}
+
+    /* Question screen buttons */
+    .center{
+      display:flex; flex-direction:column; gap:14px; align-items:center; text-align:center;
+      padding: 14px;
+    }
+
+    .choice-row{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+    .btn-yes{background: linear-gradient(135deg, #35d07f, #1fc56f); color:white; box-shadow: 0 14px 28px rgba(53,208,127,0.18);} 
+    .btn-yes:hover{filter:brightness(1.06)}
+
+    .btn-no{
+      background: rgba(255,107,107,0.16);
+      border:1px solid rgba(255,107,107,0.32);
+      color: rgba(255,255,255,0.92);
+      position:relative;
+    }
+
+    /* Option cards */
+    .opt-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+    @media (max-width:820px){.opt-grid{grid-template-columns:1fr}}
+
+    .opt{
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.08);
+      padding:14px;
+      text-align:left;
+      cursor:pointer;
+      transition: transform .10s ease, filter .12s ease;
+    }
+    .opt:hover{filter:brightness(1.06)}
+    .opt:active{transform:scale(0.99)}
+    .opt b{display:block; margin-bottom:6px}
+    .opt span{color: rgba(255,255,255,0.75); line-height:1.5}
+
+    .footer{text-align:center; color: rgba(255,255,255,0.55); font-size:12px; margin-top:4px;}
+
+    @media (prefers-reduced-motion: reduce){
+      .heart{display:none}
+      .env-flap,.paper{transition:none}
+      .sparkle{animation:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <div class="tiles" id="tiles"></div>
+    <div class="sparkles" id="sparkles"></div>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <span style="font-size:18px">💌</span>
+        <span id="siteTitle">Mi Reina 💗</span>
+        <span class="badge" id="fromBadge">from: You</span>
+      </div>
+      <div class="badge" id="todayBadge">Loading…</div>
+    </header>
+
+    <main class="stage">
+      <div class="hearts" id="hearts"></div>
+      <div class="stage-inner">
+
+        <!-- SCREEN 1: Intro -->
+        <section class="screen active" id="screenIntro">
+          <div class="grid">
+            <div class="card">
+              <h1 id="introText">IF you are here right now, you're the love of my life and i want to spend rest of my life with you till we become old and rusted. SO let's get started.</h1>
+              <p class="lead">Tap the button. The next part is for you.</p>
+              <div class="cta">
+                <button class="btn-primary" id="btnStart">Let’s get started 💖</button>
+              </div>
+              <div class="divider"></div>
+              <p class="tiny">If this feels too animated, enable “Reduce motion” on your phone/PC.</p>
+            </div>
+            <div class="card">
+              <h2 style="margin:0 0 10px">What’s inside</h2>
+              <p class="lead" style="margin:0">You’ll open an envelope. Then… a very important question.</p>
+              <div class="divider"></div>
+              <p class="tiny">Your letter text goes inside the envelope pages. (You’ll paste it later.)</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 2: Envelope + Letter Pages -->
+        <section class="screen" id="screenLetter">
+          <div class="letter-grid">
+            <div>
+              <div class="card">
+                <h2 style="margin:0 0 8px">Your letter 💌</h2>
+                <p class="tiny" style="margin:0">Click the envelope to open it. Use Next/Prev to turn pages.</p>
+              </div>
+
+              <div style="height:12px"></div>
+
+              <div class="envelope-stage">
+                <div class="sticker st1">🐰</div>
+                <div class="sticker st2">🌸</div>
+                <div class="sticker st3">🧸</div>
+                <div class="sticker st4">💞</div>
+
+                <div class="env-shadow"></div>
+
+                <div class="env" id="envelope" role="button" tabindex="0" aria-label="Open the envelope">
+                  <div class="env-body">
+                    <div class="env-hearts"></div>
+                    <div class="env-flap"></div>
+
+                    <div class="paper" id="paper">
+                      <div class="paper-inner" id="paperInner"></div>
+                      <div class="paper-nav">
+                        <button class="mini" id="btnPrev">← Prev</button>
+                        <div class="count" id="pageCount">Page 1 / 1</div>
+                        <button class="mini" id="btnNext">Next →</button>
+                      </div>
+                    </div>
+
+                    <div class="env-band">
+                      <div class="chibi-dot">🐣</div>
+                      <div class="tiny" style="color: rgba(20,20,26,0.70)">Open me →</div>
+                      <div class="chibi-dot">🧸</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="height:12px"></div>
+              <div class="card">
+                <div class="cta" style="margin-top:0; justify-content:space-between">
+                  <button class="btn-ghost" id="btnBackIntro">← Back</button>
+                  <button class="btn-primary" id="btnAfterLetter">Next 💗</button>
+                </div>
+                <p class="tiny" style="margin:10px 0 0">(Tip: click the envelope first, then read. Hit Next when done.)</p>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="title">Letter instructions</div>
+              <div class="body">
+                This letter supports page turning.
+                <div class="divider"></div>
+                When you send me the real letter, I will replace the placeholder pages with your text.
+                <div class="divider"></div>
+                For now, this is just to test the flow.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 3: Important question -->
+        <section class="screen" id="screenQuestion">
+          <div class="card center">
+            <h1 style="margin-bottom:0">Now a really important question for you Mi Reina 💗</h1>
+            <p class="lead" style="max-width:780px">Will you be my Valentine’s?</p>
+            <div class="choice-row" style="margin-top:6px">
+              <button class="btn-yes" id="btnYes">Yes 💖</button>
+              <button class="btn-no" id="btnNo">No 🙃</button>
+            </div>
+            <p class="tiny">(The “No” button is intentionally impossible. Don’t fight it.)</p>
+          </div>
+        </section>
+
+        <!-- SCREEN 4: Set for a date -->
+        <section class="screen" id="screenSetup">
+          <div class="card center">
+            <h1 style="margin-bottom:0">Let’s get it all set for a date 💗</h1>
+            <p class="lead" style="max-width:780px">One more step.</p>
+            <div class="cta" style="justify-content:center">
+              <button class="btn-primary" id="btnToChoices">Next →</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 5: Choose a date -->
+        <section class="screen" id="screenChoices">
+          <div class="card">
+            <h1 style="margin-bottom:8px">Choose a date</h1>
+            <p class="lead">Pick one option below.</p>
+            <div class="divider"></div>
+            <div class="opt-grid">
+              <div class="opt" id="opt1" role="button" tabindex="0">
+                <b>Cooking together</b>
+                <span>I'll cook whatever you want me to cook + movie night + virtual gifts from me + wine</span>
+              </div>
+              <div class="opt" id="opt2" role="button" tabindex="0">
+                <b>Going out</b>
+                <span>Going out somewhere to eat in a restaurant + movie night + wine + virtual gifts from me</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 6: Thank you -->
+        <section class="screen" id="screenThanks">
+          <div class="card center">
+            <h1 style="margin-bottom:0">Thank you for being my Valentine 💖</h1>
+            <p class="lead" id="chosenText" style="max-width:820px"></p>
+            <div class="divider" style="width: min(720px, 100%)"></div>
+            <p class="tiny">Now send me what time you want — I’ll handle the rest.</p>
+          </div>
+        </section>
+
+        <div class="footer">Made with 💗 and intent.</div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // ===== ONLY EDIT THESE LATER (when you send your letter) =====
+    const CONFIG = {
+      siteTitle: "Mi Reina 💗",
+      fromBadge: "from: Your Name",
+      introText: "IF you are here right now, you're the love of my life and i want to spend rest of my life with you till we become old and rusted. SO let's get started.",
+
+      // Letter pages (placeholder). You will replace these with your real letter.
+      // Each item can be plain text. You can also include simple HTML tags like <b>...</b> or <br>.
+      letterPages: [
+        "<b>Page 1:</b><br><br>This is a placeholder letter page so you can test the page-turning.\n\n(You will paste your real letter later.)",
+        "<b>Page 2:</b><br><br>Another placeholder page.\n\nWhen you send your big letter, I’ll split it into pages here.",
+        "<b>Page 3:</b><br><br>Last placeholder.\n\nAfter you finish reading, press the Next button outside the envelope.",
+      ],
+    };
+
+    // ===== Helpers =====
+    const $ = (id) => document.getElementById(id);
+    function show(id){
+      ["screenIntro","screenLetter","screenQuestion","screenSetup","screenChoices","screenThanks"].forEach(s => $(s).classList.remove("active"));
+      $(id).classList.add("active");
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+
+    // Header + intro
+    $("siteTitle").textContent = CONFIG.siteTitle;
+    $("fromBadge").textContent = CONFIG.fromBadge;
+    $("introText").te
