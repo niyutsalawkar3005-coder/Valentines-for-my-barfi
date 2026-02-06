@@ -399,30 +399,252 @@
   </div>
 
   <script>
-    // ===== ONLY EDIT THESE LATER (when you send your letter) =====
-    const CONFIG = {
-      siteTitle: "Mi Reina 💗",
-      fromBadge: "from: Your Name",
-      introText: "IF you are here right now, you're the love of my life and i want to spend rest of my life with you till we become old and rusted. SO let's get started.",
+  // If something breaks, show it on the page (so you don't need DevTools)
+  (function(){
+    function setTopRight(msg){
+      var el = document.getElementById('todayBadge');
+      if(el) el.textContent = msg;
+    }
+    window.addEventListener('error', function(e){
+      setTopRight('JS error: ' + (e && e.message ? e.message : 'unknown'));
+    });
+    window.addEventListener('unhandledrejection', function(e){
+      setTopRight('JS error: promise');
+    });
 
-      // Letter pages (placeholder). You will replace these with your real letter.
-      // Each item can be plain text. You can also include simple HTML tags like <b>...</b> or <br>.
-      letterPages: [
-        "<b>Page 1:</b><br><br>This is a placeholder letter page so you can test the page-turning.\n\n(You will paste your real letter later.)",
-        "<b>Page 2:</b><br><br>Another placeholder page.\n\nWhen you send your big letter, I’ll split it into pages here.",
-        "<b>Page 3:</b><br><br>Last placeholder.\n\nAfter you finish reading, press the Next button outside the envelope.",
-      ],
-    };
-
-    // ===== Helpers =====
-    const $ = (id) => document.getElementById(id);
-    function show(id){
-      ["screenIntro","screenLetter","screenQuestion","screenSetup","screenChoices","screenThanks"].forEach(s => $(s).classList.remove("active"));
-      $(id).classList.add("active");
-      window.scrollTo({top:0, behavior:"smooth"});
+    function onReady(fn){
+      if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+      else fn();
     }
 
-    // Header + intro
-    $("siteTitle").textContent = CONFIG.siteTitle;
-    $("fromBadge").textContent = CONFIG.fromBadge;
-    $("introText").te
+    onReady(function(){
+      // ===== ONLY EDIT THESE LATER (when you send your letter) =====
+      var CONFIG = {
+        siteTitle: "Mi Reina 💗",
+        fromBadge: "from: Your Name",
+        introText: "IF you are here right now, you're the love of my life and i want to spend rest of my life with you till we become old and rusted. SO let's get started.",
+
+        // Letter pages (placeholder). Replace later.
+        letterPages: [
+          "<b>Page 1:</b><br><br>This is a placeholder letter page so you can test the page-turning.
+
+(You will paste your real letter later.)",
+          "<b>Page 2:</b><br><br>Another placeholder page.
+
+When you send your big letter, I’ll split it into pages here.",
+          "<b>Page 3:</b><br><br>Last placeholder.
+
+After you finish reading, press the Next button outside the envelope.",
+        ]
+      };
+
+      // ===== Helpers =====
+      function $(id){ return document.getElementById(id); }
+      function safeGet(id){
+        var el = $(id);
+        if(!el) throw new Error('Missing element #' + id);
+        return el;
+      }
+      function show(id){
+        var ids = ["screenIntro","screenLetter","screenQuestion","screenSetup","screenChoices","screenThanks"];
+        for(var i=0;i<ids.length;i++){
+          var el = $(ids[i]);
+          if(el) el.classList.remove('active');
+        }
+        safeGet(id).classList.add('active');
+        window.scrollTo({top:0, behavior:"smooth"});
+      }
+
+      // Header + intro
+      safeGet("siteTitle").textContent = CONFIG.siteTitle;
+      safeGet("fromBadge").textContent = CONFIG.fromBadge;
+      safeGet("introText").textContent = CONFIG.introText;
+
+      var today = new Date();
+      safeGet("todayBadge").textContent = "Today: " + today.toLocaleDateString(undefined, { weekday:"short", year:"numeric", month:"short", day:"numeric" });
+
+      // ===== Cute background tiles: original SVG chibi couple (not from any anime) =====
+      function coupleSvg(seed){
+        var hair1 = (seed % 2 === 0) ? "#2a2a2e" : "#3a2b2b";
+        var hair2 = (seed % 3 === 0) ? "#2b3a4a" : "#2b2b3a";
+        var blush = "rgba(255,77,141,0.55)";
+        return (
+          '<svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">' +
+            '<defs>' +
+              '<linearGradient id="g' + seed + '" x1="0" x2="1" y1="0" y2="1">' +
+                '<stop offset="0" stop-color="rgba(255,77,141,0.25)"/>' +
+                '<stop offset="1" stop-color="rgba(255,209,223,0.12)"/>' +
+              '</linearGradient>' +
+            '</defs>' +
+            '<rect width="400" height="500" fill="url(#g' + seed + ')"/>' +
+            '<g transform="translate(40,40)">' +
+              '<g opacity="0.65">' +
+                '<path d="M290 50c-10-18-33-18-43-2-10-16-33-16-43 2-11 20 8 38 43 64 35-26 54-44 43-64z" fill="rgba(255,77,141,0.55)"/>' +
+                '<path d="M90 90c-7-12-22-12-29-1-7-11-22-11-29 1-8 13 5 26 29 43 24-17 37-30 29-43z" fill="rgba(255,209,223,0.55)"/>' +
+              '</g>' +
+              '<g transform="translate(70,170)">' +
+                '<circle cx="70" cy="70" r="70" fill="rgba(255,255,255,0.82)"/>' +
+                '<path d="M5 70c20-55 65-80 130-55 5 40-10 70-25 90-25-20-60-20-80 0-16-18-26-40-25-35z" fill="' + hair1 + '" opacity="0.9"/>' +
+                '<circle cx="45" cy="78" r="8" fill="#111"/>' +
+                '<circle cx="95" cy="78" r="8" fill="#111"/>' +
+                '<circle cx="45" cy="78" r="3" fill="#fff"/>' +
+                '<circle cx="95" cy="78" r="3" fill="#fff"/>' +
+                '<path d="M65 100c10 10 20 10 30 0" stroke="#111" stroke-width="6" stroke-linecap="round" fill="none"/>' +
+                '<circle cx="30" cy="102" r="10" fill="' + blush + '"/>' +
+                '<circle cx="110" cy="102" r="10" fill="' + blush + '"/>' +
+                '<path d="M20 145c30 25 110 25 140 0" fill="rgba(255,77,141,0.14)"/>' +
+              '</g>' +
+              '<g transform="translate(190,170)">' +
+                '<circle cx="70" cy="70" r="70" fill="rgba(255,255,255,0.82)"/>' +
+                '<path d="M10 60c18-50 68-70 130-40-5 50-30 75-45 92-18-18-55-22-80 0-12-12-22-25-25-52z" fill="' + hair2 + '" opacity="0.9"/>' +
+                '<circle cx="45" cy="78" r="8" fill="#111"/>' +
+                '<circle cx="95" cy="78" r="8" fill="#111"/>' +
+                '<circle cx="45" cy="78" r="3" fill="#fff"/>' +
+                '<circle cx="95" cy="78" r="3" fill="#fff"/>' +
+                '<path d="M62 102c12 8 24 8 36 0" stroke="#111" stroke-width="6" stroke-linecap="round" fill="none"/>' +
+                '<circle cx="30" cy="102" r="10" fill="' + blush + '"/>' +
+                '<circle cx="110" cy="102" r="10" fill="' + blush + '"/>' +
+                '<path d="M18 145c35 28 110 28 145 0" fill="rgba(255,209,223,0.16)"/>' +
+              '</g>' +
+              '<text x="140" y="410" font-size="22" fill="rgba(255,255,255,0.85)" font-weight="800">cute moments</text>' +
+            '</g>' +
+          '</svg>'
+        );
+      }
+
+      function makeTile(seed){
+        var t = document.createElement('div');
+        t.className = 'tile';
+        var colStart = (seed % 10) + 1;
+        var rowStart = (seed % 7) + 1;
+        var colSpan = (seed % 3) + 3;
+        var rowSpan = (seed % 2) + 3;
+        t.style.gridColumn = colStart + ' / span ' + colSpan;
+        t.style.gridRow = rowStart + ' / span ' + rowSpan;
+        t.innerHTML = coupleSvg(seed);
+        return t;
+      }
+
+      var tiles = safeGet('tiles');
+      for(var i=0;i<10;i++) tiles.appendChild(makeTile(i+1));
+
+      // Sparkles
+      var sparkles = safeGet('sparkles');
+      var sparkleChars = ["✨","✦","✧","⋆","💫"]; 
+      for(var j=0;j<18;j++){
+        var s = document.createElement('div');
+        s.className = 'sparkle';
+        s.textContent = sparkleChars[Math.floor(Math.random()*sparkleChars.length)];
+        s.style.left = (Math.random()*100).toFixed(2) + '%';
+        s.style.top = (Math.random()*100).toFixed(2) + '%';
+        s.style.animationDelay = (Math.random()*2.4).toFixed(2) + 's';
+        s.style.fontSize = (12 + Math.random()*10).toFixed(0) + 'px';
+        sparkles.appendChild(s);
+      }
+
+      // Floating hearts
+      var hearts = safeGet('hearts');
+      var heartChars = ["💗","💖","💘","💕","💞","💓","💝"]; 
+      function spawnHeart(){
+        var el = document.createElement('div');
+        el.className = 'heart';
+        el.textContent = heartChars[Math.floor(Math.random()*heartChars.length)];
+        var left = Math.random()*100;
+        var dur = 5 + Math.random()*4.5;
+        var drift = (Math.random()*120 - 60).toFixed(0) + 'px';
+        var size = (14 + Math.random()*18).toFixed(0);
+        el.style.left = left + '%';
+        el.style.setProperty('--drift', drift);
+        el.style.animationDuration = dur + 's';
+        el.style.fontSize = size + 'px';
+        hearts.appendChild(el);
+        setTimeout(function(){ el.remove(); }, (dur+0.2)*1000);
+      }
+      setInterval(spawnHeart, 520);
+
+      // Letter pagination
+      var pages = CONFIG.letterPages && CONFIG.letterPages.length ? CONFIG.letterPages : ["(no pages)"];
+      var pageIndex = 0;
+
+      function renderPage(){
+        var inner = safeGet('paperInner');
+        var safe = String(pages[pageIndex] || '');
+        inner.innerHTML = safe.replace(/
+/g, '<br>');
+        safeGet('pageCount').textContent = 'Page ' + (pageIndex+1) + ' / ' + pages.length;
+
+        var prev = safeGet('btnPrev');
+        var next = safeGet('btnNext');
+        prev.disabled = (pageIndex === 0);
+        next.disabled = (pageIndex === pages.length - 1);
+        prev.style.opacity = prev.disabled ? 0.55 : 1;
+        next.style.opacity = next.disabled ? 0.55 : 1;
+      }
+      renderPage();
+
+      safeGet('btnPrev').addEventListener('click', function(e){ e.stopPropagation(); if(pageIndex>0){ pageIndex--; renderPage(); }});
+      safeGet('btnNext').addEventListener('click', function(e){ e.stopPropagation(); if(pageIndex<pages.length-1){ pageIndex++; renderPage(); }});
+
+      // Envelope open
+      var env = safeGet('envelope');
+      var opened = false;
+      function toggleEnvelope(){
+        opened = !opened;
+        env.classList.toggle('open', opened);
+        if(opened){
+          for(var k=0;k<16;k++) (function(kk){ setTimeout(spawnHeart, kk*45); })(k);
+        }
+      }
+      env.addEventListener('click', toggleEnvelope);
+      env.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ toggleEnvelope(); }});
+
+      // Navigation flow
+      safeGet('btnStart').addEventListener('click', function(){ show('screenLetter'); });
+      safeGet('btnBackIntro').addEventListener('click', function(){ show('screenIntro'); });
+      safeGet('btnAfterLetter').addEventListener('click', function(){ show('screenQuestion'); });
+
+      // No button dodge
+      var noBtn = safeGet('btnNo');
+      function dodgeNo(){
+        var pad = 12;
+        var w = 140;
+        var h = 52;
+        var maxX = Math.max(pad, window.innerWidth - w - pad);
+        var maxY = Math.max(pad, window.innerHeight - h - pad);
+        var x = pad + Math.random()*(maxX - pad);
+        var y = pad + Math.random()*(maxY - pad);
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
+        noBtn.style.zIndex = 9999;
+      }
+      noBtn.addEventListener('mouseenter', dodgeNo);
+      noBtn.addEventListener('mousemove', dodgeNo);
+      noBtn.addEventListener('touchstart', function(e){ e.preventDefault(); dodgeNo(); }, {passive:false});
+
+      // Yes flow
+      safeGet('btnYes').addEventListener('click', function(){
+        for(var z=0;z<22;z++) (function(zz){ setTimeout(spawnHeart, zz*40); })(z);
+        show('screenSetup');
+      });
+
+      safeGet('btnToChoices').addEventListener('click', function(){ show('screenChoices'); });
+
+      function choose(text){
+        safeGet('chosenText').textContent = text;
+        for(var q=0;q<20;q++) (function(qq){ setTimeout(spawnHeart, qq*45); })(q);
+        show('screenThanks');
+      }
+
+      function clickOrEnter(el, fn){
+        el.addEventListener('click', fn);
+        el.addEventListener('keydown', function(e){ if(e.key==='Enter') fn(); });
+      }
+
+      clickOrEnter(safeGet('opt1'), function(){ choose('You chose: Cooking together + movie night + virtual gifts + wine 💞'); });
+      clickOrEnter(safeGet('opt2'), function(){ choose('You chose: Going out to eat + movie night + wine + virtual gifts 💞'); });
+    });
+  })();
+</script>
+</body>
+</html>
