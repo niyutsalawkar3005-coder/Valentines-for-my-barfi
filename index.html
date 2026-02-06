@@ -646,17 +646,18 @@ After you finish reading, press the Next button outside the envelope.",
     });
   })();
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const badge = document.getElementById("todayBadge");
-    if (badge) badge.textContent = "JS OK ✅";
+document.addEventListener("DOMContentLoaded", () => {
+  const badge = document.getElementById("todayBadge");
+  if (badge) badge.textContent = "JS OK ✅";
 
-    const btn = document.getElementById("btnStart");
-    if (btn) {
-      btn.addEventListener("click", () => {
-        alert("Button works ✅");
-      });
-    }
-  });
+  const btn = document.getElementById("btnStart");
+  if (btn) {
+    btn.addEventListener("click", () => {
+      alert("Button works ✅");
+    });
+  }
+});
 </script>
+  
 </body>
 </html>
